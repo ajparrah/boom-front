@@ -1,5 +1,5 @@
 const API_URL =
-  process.env.API_URL || 'https://reachyetitestback.herokuapp.com';
+  process.env.API_URL || 'https://stormy-bastion-00558.herokuapp.com/';
 const API_HEADER = new Headers();
 API_HEADER.append('Content-Type', 'application/json');
 
@@ -15,10 +15,12 @@ export const getFindIndex = async (arrayToSend) => {
     });
     const data = await response.json();
     if (data.ok) {
-      return data.message;
+      return data.data;
+    } else {
+      throw new Error(data.message);
     }
   } catch (error) {
-    console.log('Something went wrong');
-    return error;
+    console.log('Something went wrong', error);
+    throw new Error(error.message);
   }
 };
