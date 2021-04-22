@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
-// import MaskedInput from 'react-maskedinput';
+import { getFindIndex } from '../api/findIndex';
 
 const Form = () => {
   const [arrayGiven, setArrayGiven] = useState('');
+  const [indexFound, setIndexFound] = useState(null);
 
   const handleChange = (e) => {
     setArrayGiven(e.target.value);
   };
 
-  const handleSubmit = () => {
-    const arrayFromText = arrayGiven.split(',');
-    const arrayToSend = arrayFromText.map((item) => Number(item));
-    console.log(arrayToSend);
+  const handleSubmit = async () => {
+    try {
+      const arrayFromText = arrayGiven.split(',');
+      const arrayToSend = arrayFromText.map((item) => Number(item));
+      const findIndex = await getFindIndex(arrayToSend);
+      setIndexFound(findIndex);
+    } catch (error) {
+      console.log('Error sending array');
+    }
   };
 
   return (
@@ -39,6 +45,11 @@ const Form = () => {
             </button>
           </div>
         </div>
+        {indexFound && (
+          <p>
+            The answer is <strong>{indexFound}</strong>
+          </p>
+        )}
       </div>
     </div>
   );
